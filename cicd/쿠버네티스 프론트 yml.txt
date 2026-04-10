@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mediq-frontend-DEPLOY_COLOR
+  labels:
+    app: mediq-frontend
+    version: DEPLOY_COLOR
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mediq-frontend
+      version: DEPLOY_COLOR
+  template:
+    metadata:
+      labels:
+        app: mediq-frontend
+        version: DEPLOY_COLOR
+    spec:
+      volumes:
+        - name: nginx-config-volume
+          configMap:
+            name: frontend-config
+      containers:
+        - name: mediq-frontend
+          image: IMAGE_PLACEHOLDER
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          # Blue 환경 설정에 있던 환경 변수 주입 방식 유지
+          envFrom:
+            - configMapRef:
+                name: frontend-config
+          volumeMounts:
+            - name: nginx-config-volume
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: default.conf

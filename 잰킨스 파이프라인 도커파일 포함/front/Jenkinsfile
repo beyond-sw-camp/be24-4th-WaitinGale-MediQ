@@ -1,0 +1,53 @@
+pipeline {
+    agent any 
+
+    environment {
+        IMAGE_NAME = 'sole07/mediq-frontend'
+        IMAGE_TAG  = "${env.BUILD_NUMBER}"
+        DOCKER_CRED_ID = 'dockerhub-id'
+    }
+
+    stages {
+        stage('1. Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/sole0714/mediqforntver.git'
+            }
+        }
+
+        stage('2. NPM Build') {
+            steps {
+                sh '''
+                    npm install
+                    npm run build
+                '''
+            }
+        }
+
+        stage('3. Docker Build & Push') {
+            steps {
+                script {
+                    docker.withRegistry('', DOCKER_CRED_ID) {
+                        def img = docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
+                        img.push();
+                        img.push('latest')
+                    }
+                }
+            }
+        }
+
+        stage('4. Deploy to Kubernetes') {
+            steps {
+                script {
+                    def targetColor = "blue" 
+                    
+                    echo "${targetColor} 환경으로 배포를 시작합니다..."
+                    
+                    sh "sed -i 's|IMAGE_PLACEHOLDER|${IMAGE_NAME}:${IMAGE_TAG}|g' deployment.yaml"
+                    sh "sed -i 's|DEPLOY_COLOR|${targetColor}|g' deployment.yaml"
+                    
+                    sh "kubectl apply -f deployment.yaml"
+                }
+            }
+        }
+    }
+}
