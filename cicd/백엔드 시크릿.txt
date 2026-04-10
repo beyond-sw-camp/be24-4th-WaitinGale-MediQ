@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: backend-secret
+type: Opaque
+data:
+  DB_PASS: "c="
+  DB_PASSWORD: "cXdl="
+  GOOGLE_CLIENT_SECRET: "R09DU1BYLVNg=="
+  JWT_SECRET: "VkdocGMwbHpRVk4xY0dWeVUyVmpjbVYwUzJWNVJtOXlUV1ZrYVZGUWNtOXFaV04wTWpBeU5nPT0="
+  KAKAO_CLIENT_SECRET: "amJuemQ1QnA="
+  MAIL_PASS: "cX="
+  PORTONE_API_SECRET: "R25tQ1Axc21XUlhnYWJCS"

@@ -1,0 +1,56 @@
+pipeline {
+    agent any
+    environment {
+        IMAGE_NAME = 'sole07/mediqbackv1'
+        IMAGE_TAG = "${env.BUILD_NUMBER}"
+        DOCKER_CRED_ID = 'dockerhub-id'
+    }
+    stages {
+        stage('Checkout & Build') {
+            steps {
+                git branch: 'main', url: 'https://github.com/sole0714/mediqbackendver.git'
+                sh 'chmod +x ./gradlew'
+                sh './gradlew clean bootJar'
+            }
+        }
+        stage('Docker Build & Push') {
+            steps {
+                script {
+                    docker.withRegistry('', DOCKER_CRED_ID) {
+                        def img = docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
+                        img.push(); img.push('latest')
+                    }
+                }
+            }
+        }
+        stage('Blue-Green Strategy') {
+            steps {
+                script {
+
+                    def activeColor = sh(script: "kubectl get svc mediq-backend-svc -o jsonpath='{.spec.selector.color}' || echo 'none'", returnStdout: true).trim()
+                    def targetColor = (activeColor == 'blue') ? 'green' : 'blue'
+
+                    echo "현재 운영 중인 색상: ${activeColor} -> 새 버전 배포 대상: ${targetColor}"
+
+
+                    sh "sed -i 's|IMAGE_PLACEHOLDER|${IMAGE_NAME}:${IMAGE_TAG}|g' deployment.yaml"
+                    sh "sed -i 's|DEPLOY_COLOR|${targetColor}|g' deployment.yaml"
+
+
+                    sh "kubectl apply -f deployment.yaml"
+
+
+                    echo "새 버전(${targetColor})이 준비될 때까지 기다립니다..."
+                    sh "kubectl rollout status deployment/mediq-backend-${targetColor} --timeout=90s"
+
+
+                    sh "kubectl patch svc mediq-backend-svc -p '{\"spec\":{\"selector\":{\"color\":\"${targetColor}\"}}}'"
+
+                    echo "스위칭 완료! 이제 ${targetColor}가 서비스 중입니다."
+
+
+                }
+            }
+        }
+    }
+}

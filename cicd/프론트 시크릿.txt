@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mediq-tls-secret
+type: kubernetes.io/tls
+data:
+  # 인증서 데이터 (Base64 인코딩 상태)
+  tls.crt: |
+    LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUZkekNDQTFmZ0F3SUJBZ0lSQU5q... (생략된 데이터 내용)
+  
+  # 개인키 데이터 (Base64 인코딩 상태)
+  tls.key: |
+    LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2UUlCQUFBT0NBUUVBclZpZ... (생략된 데이터 내용)
+type: kubernetes.io/tls

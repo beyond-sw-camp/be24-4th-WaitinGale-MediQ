@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+data:
+ 
+  APP_CORS_ALLOWED_ORIGINS: "https://www.medimedi.kro.kr,http://localhost:5173"
+  
+  APP_FRONTEND_URL: "https://www.medimedi.kro.kr"
+  
+  DB_URL: "jdbc:mariadb://my-mariadb:3306/my_database"
+  DB_USER: "root"
+  )
+  GOOGLE_CLIENT_ID: ""
+  KAKAO_CLIENT_ID: ""
+  KAKAO_REDIRECT_URI: ""
+  
+  JWT_EXPIRE: "86400000"
+  
+  MAIL_ADDR: "@gmail.com"
+  SPRING_PROFILES_ACTIVE: "prod"
+  UPLOAD_PATH: "/path/to/your/upload/directory"
