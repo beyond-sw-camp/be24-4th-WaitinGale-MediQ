@@ -80,17 +80,33 @@
 --- 
 ## 🎯 DevOps
 
-### 무중단 버전 변경 테스트
-<img width="1224" height="864" alt="Image" src="https://github.com/user-attachments/assets/19f5c3b6-38a4-480c-9c41-707d4de92fe9" />
+<br>
+<details>
+  <summary>무중단 버전 변경 테스트</summary>
+  <img width="1224" height="864" alt="Image" src="https://github.com/user-attachments/assets/19f5c3b6-38a4-480c-9c41-707d4de92fe9" />
+</details>
 
-### 무중단 배포 테스트 중 부하 테스트
-<img width="1919" height="904" alt="Image" src="https://github.com/user-attachments/assets/d5d6b9ff-2adb-44cb-8a71-44aed408789f" />
+<details>
+  <summary>무중단 배포 테스트 중 부하 테스트</summary>
+  <img width="1919" height="904" alt="Image" src="https://github.com/user-attachments/assets/d5d6b9ff-2adb-44cb-8a71-44aed408789f" />
+</details>
 
-### 시스템 아키텍처 (블루)
-<img width="962" height="851" alt="Image" src="https://github.com/user-attachments/assets/d258fcd5-a60c-4fdf-aeb9-4fafca23c757" />
 
-### 시스템 아키텍처 (그린)
-<img width="967" height="852" alt="Image" src="https://github.com/user-attachments/assets/b28004bf-609c-4b6b-9ad3-8d356f483865" />
+<details>
+  <summary>시스템 아키텍처 (블루)</summary>
+  <img width="962" height="851" alt="Image" src="https://github.com/user-attachments/assets/d258fcd5-a60c-4fdf-aeb9-4fafca23c757" />
+</details>
+
+
+<details>
+  <summary>시스템 아키텍처 (그린)</summary>
+  <img width="967" height="852" alt="Image" src="https://github.com/user-attachments/assets/b28004bf-609c-4b6b-9ad3-8d356f483865" />
+</details>
+
+---
+### 카나리배포 or 블루-그린 배포 중 블루-그린 배포 선택한 이유
+
+프론트와 백엔드에서 중요한 기능이 지도 api 받아와서 병원 조회와 예약 대기열 반열이라고 생각하는데 카나리배포를 할 경우 일부 사용자가 카나리 배포가 실행될 때 대기열 반영이 실시간으로 되지 않는다던지 중복이나 누락 발생 가능성이 있고, 야간에 운영하는 병원이 많지 않다보니 그 시간대를 활용해 블루그린 방식으로 배포 하게 되면 사용자들에게도 크게 영향을 끼치지 않을 것 이라고 생각했기 때문에 블루-그린 배포를 선택하였습니다.
 
 
 서비스의 안정성과 가용성을 극대화하기 위해 블루-그린 배포 전략을 채택하였습니다. 운영 중인 서버 환경과 동일한 신규 환경을 구축하여 배포 시 발생하는 리스크를 최소화합니다.
@@ -109,4 +125,16 @@ Standby 환경 구성: 현재 서비스 중인 Blue 환경과 별개로 Green �
 
 트래픽 전환 : 로드밸런서 설정을 변경하여 모든 유저 트래픽을 Green으로 일제히 유입시킵니다.
 
+---
+
+### 시스템 아키텍처 인그레스 사용 이유
+
+도메인을 하나로 설정하고 /api 라는 주소로 오면 백엔드로 요청 보내게 하려고 인그레스를 저렇게 사용했습니다.
+
+---
+
+### 모니터링 환경 구성
+
 모니터링 및 정리: 신규 버전의 안정성을 확인한 후, 일정 시간 뒤 이전 버전의 자원을 회수하거나 대기 상태로 유지합니다.
+
+부하 테스트(nGrinder)를 진행할 때는 실제 외부 사용자가 접속하는 것과 완벽히 동일한 환경을 묘사해야 하기 때문에 클러스터 내부의 개별 Pod나 SVC로 직접 쏘는 것이 아니라, 클러스터의 대문 역할을 하는 Ingress에 집중적으로 트래픽을 발생시켰습니다. 이렇게 해야 Ingress의 라우팅 성능과 병목 현상까지 모두 정확하게 검증할 수 있을것이라 생각했습니다.
