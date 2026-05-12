@@ -12,7 +12,8 @@
 - [🐣 팀원 소개](#-팀원-소개)
 - [🔗 서비스 및 API 문서](#-서비스-및-api-문서)
 - [💊 MediQ 서비스 소개](#-mediq-서비스-소개)
-- [🎯 DevOps_무중단 버전 변경 테스트](#-무중단-버전-변경-테스트)
+- [🎯 DevOps 무중단 버전 변경 테스트](#-devops)
+
 
 
 <br>
@@ -76,17 +77,19 @@
 - **의료 기록 관리**: 개인별 진료 기록, 처방전, 관련 문서 안전 저장 및 열람
 - **진료 대기 안내**: 원격 대기 등록 후 내 차례가 다가오면 실시간 푸시 알림 송신
 
+--- 
+## 🎯 DevOps
 
-## 무중단 버전 변경 테스트
+### 무중단 버전 변경 테스트
 <img width="1224" height="864" alt="Image" src="https://github.com/user-attachments/assets/19f5c3b6-38a4-480c-9c41-707d4de92fe9" />
 
-## 무중단 배포 테스트 중 부하 테스트
+### 무중단 배포 테스트 중 부하 테스트
 <img width="1919" height="904" alt="Image" src="https://github.com/user-attachments/assets/d5d6b9ff-2adb-44cb-8a71-44aed408789f" />
 
-## 시스템 아키텍처 (블루)
+### 시스템 아키텍처 (블루)
 <img width="962" height="851" alt="Image" src="https://github.com/user-attachments/assets/d258fcd5-a60c-4fdf-aeb9-4fafca23c757" />
 
-## 시스템 아키텍처 (그린)
+### 시스템 아키텍처 (그린)
 <img width="967" height="852" alt="Image" src="https://github.com/user-attachments/assets/b28004bf-609c-4b6b-9ad3-8d356f483865" />
 
 
